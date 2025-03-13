@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Sign Up</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div id="login-container">
+            <h2>Login</h2>
+            <input type="email" id="login-email" placeholder="Email">
+            <input type="password" id="login-password" placeholder="Password">
+            <button onclick="login()">Login</button>
+            <p>Don't have an account? <a href="#" onclick="toggleForms()">Sign Up</a></p>
+        </div>
+        
+        <div id="signup-container" style="display: none;">
+            <h2>Sign Up</h2>
+            <input type="email" id="signup-email" placeholder="Email">
+            <input type="password" id="signup-password" placeholder="Password">
+            <button onclick="signup()">Sign Up</button>
+            <p>Already have an account? <a href="#" onclick="toggleForms()">Login</a></p>
+        </div>
+    </div>
+    
+    <script type="module">
+        // Firebase configuration
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBCfLc-Z_SKdpJMgTdC0G1pBs9gfZycwOg",
+  authDomain: "loginregister-73aee.firebaseapp.com",
+  projectId: "loginregister-73aee",
+  storageBucket: "loginregister-73aee.firebasestorage.app",
+  messagingSenderId: "248652062019",
+  appId: "1:248652062019:web:4f70d2a3f6a53afb22e3f6"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        window.signup = function() {
+            const email = document.getElementById("signup-email").value;
+            const password = document.getElementById("signup-password").value;
+            createUserWithEmailAndPassword(auth, email, password)
+                .then(userCredential => {
+                    alert("Sign up successful!");
+                    toggleForms();
+                })
+                .catch(error => {
+                    alert(error.message);
+                });
+        };
+
+        window.login = function() {
+            const email = document.getElementById("login-email").value;
+            const password = document.getElementById("login-password").value;
+            signInWithEmailAndPassword(auth, email, password)
+                .then(userCredential => {
+                    alert("Login successful!");
+                    window.location.href = "welcome.html";
+                })
+                .catch(error => {
+                    alert(error.message);
+                });
+        };
+    </script>
+    
+    <script>
+        function toggleForms() {
+            document.getElementById("login-container").style.display = 
+                document.getElementById("login-container").style.display === "none" ? "block" : "none";
+            document.getElementById("signup-container").style.display = 
+                document.getElementById("signup-container").style.display === "none" ? "block" : "none";
+        }
+    </script>
+</body>
+</html>
